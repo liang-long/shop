@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.kgc.customer.server.mapper.CustomerMapper">
+    <resultMap id="customerMap" type="Customer">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="registerDate" column="register_date"/>
+    </resultMap>
+
+    <insert id="insertOneCustomer" parameterType="Customer">
+        insert into customer(name, username, password, phone, address, register_date, is_valid) values (#{name},
+          #{username}, #{password}, #{phone}, #{address}, now(), 1);
+    </insert>
+
+    <select id="selectByUsername" parameterType="String" resultMap="customerMap">
+        select * from customer where username = #{username}
+    </select>
+
+    <update id="updateOneCustomer" parameterType="Customer">
+        update customer
+
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address}
+            </if>
+        </set>
+
+        where id = #{id}
+    </update>
+</mapper>
